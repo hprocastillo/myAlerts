@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "myalerts-d6013": {
+      "hosting": {
+        "myAlerts": [
+          "myalerts-d6013"
+        ]
+      }
+    }
+  }
+}
