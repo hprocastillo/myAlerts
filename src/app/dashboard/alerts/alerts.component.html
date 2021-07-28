@@ -1,1 +1,39 @@
-<p>alerts works!</p>
+<ul>
+  <li *ngFor="let alert of listAlerts">
+
+    <!-- Modal -->
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">{{alert.nameAlert}}</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li>
+            <div class="label">Fecha y Hora:</div>
+            <div class="info">{{alert.dateTimeAlert.toDate() | date:'mediumDate'}} {{alert.dateTimeAlert.toDate() | date:'shortTime'}}</div>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <!-- Buttons trigger modal -->
+    <!-- If hearing is coming tomorrow or more, paint green -->
+    <ng-container *ngIf="alert.dateTimeAlert.toDate().getDate() > today.getDate()">
+      <button class="btn btn-sm btn-success btn-block btn-trigger" (click)="open(content)">{{alert.timeAlert}}</button>
+    </ng-container>
+
+    <!-- If hearing is today, paint yellow -->
+    <ng-container *ngIf="alert.dateTimeAlert.toDate().getDate() === today.getDate()">
+      <button class="btn btn-sm btn-warning btn-block btn-trigger" (click)="open(content)">{{alert.timeAlert}}</button>
+    </ng-container>
+
+    <!-- If hearing is past, paint red -->
+    <ng-container *ngIf="alert.dateTimeAlert.toDate().getDate() < today.getDate()">
+      <button class="btn btn-sm btn-danger btn-block btn-trigger" (click)="open(content)">{{alert.timeAlert}}</button>
+    </ng-container>
+
+  </li>
+</ul>

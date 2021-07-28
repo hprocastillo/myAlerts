@@ -21,10 +21,11 @@ export class AlertService {
       })));
   }
 
+
   saveAlert(alert: Alert, alertId: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        const id = alertId;
+        const id = alertId || this.afs.createId();
         const data = {id, ...alert};
         const result = await this.alertsCollection.doc(id).set(data);
         resolve(result);
@@ -36,6 +37,16 @@ export class AlertService {
 
   getAlerts(): any {
     return this.alerts;
+  }
+
+  getAlertsByDate(date: any) {
+    return this.afs.collection<Alert>('alerts', ref => ref.where('dateAlert', '==', date))
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as Alert;
+          const id = a.payload.doc.id;
+          return {id, ...data};
+        })));
   }
 
 }
